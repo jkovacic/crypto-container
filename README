@@ -1,0 +1,20 @@
+A Java library for storing encrypted data. 
+
+The implemented container uses AES-256 encryption in Cipher Feedback (CFB) mode. 
+Additionally a HMAC-SHA1 message authentication code is appended to the container
+to protect the message's integrity and authenticity. To simplify manipulation of 
+encryption keys, an additional class com.jkovacic.cryptoutil.Pbkdf2 is included. It
+can be utilized to derive keys of any length from a passphrase. 
+
+The library uses its own implementation of AES encryption engine (based on the 
+Bouncy Castle project: http://www.bouncycastle.org/java.html). This way it is 
+ensured to work with any recent version of Java (it was tested with version 1.6), 
+without the need to update any jurisdiction policy files.
+
+For a brief introduction of the library, see CryptoContainerTest.java and
+PBKDF2Test.java. Additionally, Javadoc documentation about the API can be generated.
+
+The library is licenced under the Apache 2.0 license. See LICENSE.txt and
+http://www.apache.org/licenses/LICENSE-2.0 for more details.
+
+The author of the library is Jernej Kovacic (jkovacic AT gmail DOT com).
