@@ -33,7 +33,7 @@ public class CfbMode implements ICipherMode
 	private ICryptoEngine engine = null;
 	private byte[] iv = null;
 	private byte[] key = null;
-	private boolean initialzed = false;
+	private boolean initialized = false;
 	
 	/**
 	 * Constructor
@@ -46,7 +46,7 @@ public class CfbMode implements ICipherMode
 	 */
 	CfbMode(ICryptoEngine cryptoEngine, byte[] symKey, byte[] initVector) throws CryptoContainerException
 	{
-		this.initialzed = false;
+		this.initialized = false;
 		
 		// sanity check
 		if ( null==cryptoEngine || null==symKey || null==initVector )
@@ -68,7 +68,7 @@ public class CfbMode implements ICipherMode
 		this.key = symKey;
 		this.iv = initVector;
 		this.CIPHER_BLOCK_SIZE = cryptoEngine.getBlockSize();
-		this.initialzed = true;
+		this.initialized = true;
 	}
 	
 	/**
@@ -83,9 +83,9 @@ public class CfbMode implements ICipherMode
 	public byte[] encrypt(byte[] plainText) throws CryptoContainerException
 	{
 		// sanity check
-		if ( false==initialzed )
+		if ( false==initialized )
 		{
-			throw new CryptoContainerException("Engine not initialzed");
+			throw new CryptoContainerException("Engine not initialized");
 		}
 		
 		if ( null==plainText || 0==plainText.length )
@@ -101,7 +101,7 @@ public class CfbMode implements ICipherMode
 		}
 		catch ( IllegalStateException ex )
 		{
-			throw new CryptoContainerException("Initialzation of crypto engine failed: '" + ex.getMessage() + "'");
+			throw new CryptoContainerException("Initialization of crypto engine failed: '" + ex.getMessage() + "'");
 		}
 		
 		// In CFB mode, the output length always equals input's length
@@ -133,15 +133,17 @@ public class CfbMode implements ICipherMode
 				
 				engine.processBlock(input, 0, output, 0);
 				
+				final int START_BLOCK = i * CIPHER_BLOCK_SIZE;
+				
 				// CFB cipher text equals to engine's output, xor'ed by the plain text
-				System.arraycopy(output, 0, retVal, i*CIPHER_BLOCK_SIZE, len);
-				for ( int j=i*CIPHER_BLOCK_SIZE; j<i*CIPHER_BLOCK_SIZE+len; j++ )
+				System.arraycopy(output, 0, retVal, START_BLOCK, len);
+				for ( int j=START_BLOCK; j<START_BLOCK+len; j++ )
 				{
 					retVal[j] ^= plainText[j];
 				}
 				
 				// The cipher text is input to the crypto engine in the next iteration:
-				System.arraycopy(retVal, i*CIPHER_BLOCK_SIZE, input, 0, len);
+				System.arraycopy(retVal, START_BLOCK, input, 0, len);
 				
 			}
 		}
@@ -165,9 +167,9 @@ public class CfbMode implements ICipherMode
 	public byte[] decrypt(byte[] cipherText) throws CryptoContainerException
 	{
 		// sanity check
-		if ( false==initialzed )
+		if ( false==initialized )
 		{
-			throw new CryptoContainerException("Engine not initialzed");
+			throw new CryptoContainerException("Engine not initialized");
 		}
 		
 		if ( null==cipherText || 0==cipherText.length )
@@ -188,7 +190,7 @@ public class CfbMode implements ICipherMode
 		}
 		catch ( IllegalStateException ex )
 		{
-			throw new CryptoContainerException("Initialzation of crypto engine failed: '" + ex.getMessage() + "'");
+			throw new CryptoContainerException("Initialization of crypto engine failed: '" + ex.getMessage() + "'");
 		}
 		
 		// In CFB mode, the output length always equals input's length
@@ -220,15 +222,17 @@ public class CfbMode implements ICipherMode
 				
 				engine.processBlock(input, 0, output, 0);
 				
+				final int START_BLOCK = i * CIPHER_BLOCK_SIZE;
+				
 				// In CFB, the decrypted plain text is engine's output, xor'ed by the cipher text
-				System.arraycopy(output, 0, retVal, i*CIPHER_BLOCK_SIZE, len);
-				for ( int j=i*CIPHER_BLOCK_SIZE; j<i*CIPHER_BLOCK_SIZE+len; j++ )
+				System.arraycopy(output, 0, retVal, START_BLOCK, len);
+				for ( int j=START_BLOCK; j<START_BLOCK+len; j++ )
 				{
 					retVal[j] ^= cipherText[j];
 				}
 				
 				// The cipher text is input to the crypto engine in the next iteration:
-				System.arraycopy(cipherText, i*CIPHER_BLOCK_SIZE, input, 0, len);
+				System.arraycopy(cipherText, START_BLOCK, input, 0, len);
 			}
 		}
 		catch ( IllegalStateException ex )
