@@ -109,8 +109,8 @@ public class CfbMode implements ICipherMode
 		
 		try
 		{
-			int r = plainText.length % CIPHER_BLOCK_SIZE;
-			int n = plainText.length / CIPHER_BLOCK_SIZE;
+			final int r = plainText.length % CIPHER_BLOCK_SIZE;
+			final int n = plainText.length / CIPHER_BLOCK_SIZE;
 			int len;
 			
 			// input to engine's processBlock
@@ -198,8 +198,8 @@ public class CfbMode implements ICipherMode
 		
 		try
 		{
-			int n = cipherText.length / CIPHER_BLOCK_SIZE;
-			int r = cipherText.length % CIPHER_BLOCK_SIZE;
+			final int n = cipherText.length / CIPHER_BLOCK_SIZE;
+			final int r = cipherText.length % CIPHER_BLOCK_SIZE;
 			int len;
 			
 			// input to engine's processBlock

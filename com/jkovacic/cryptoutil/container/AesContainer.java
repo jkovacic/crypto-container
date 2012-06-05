@@ -102,7 +102,7 @@ public class AesContainer
 	 */
 	public AesContainer(byte[] keyMaterial) throws CryptoContainerException
 	{
-		int currTotal = KEY_SIZE + CIPHER_BLOCK_SIZE;
+		final int currTotal = KEY_SIZE + CIPHER_BLOCK_SIZE;
 		
 		// sanity check
 		if ( null==keyMaterial || keyMaterial.length<=currTotal )
@@ -111,15 +111,15 @@ public class AesContainer
 		}
 		
 		// The first KEY_SIZE bytes are taken from the symmetric key:
-		byte[] keyVector = new byte[KEY_SIZE];
+		final byte[] keyVector = new byte[KEY_SIZE];
 		System.arraycopy(keyMaterial, 0, keyVector, 0, KEY_SIZE);
 		
 		// The following CIPHER_BLOCK_SIZE bytes are taken for the initialization vector:
-		byte[] initVector = new byte[CIPHER_BLOCK_SIZE];
+		final byte[] initVector = new byte[CIPHER_BLOCK_SIZE];
 		System.arraycopy(keyMaterial, KEY_SIZE, initVector, 0, CIPHER_BLOCK_SIZE);
 		
 		// The rest is taken for the HMAC salt:
-		byte[] hmacSalt = new byte[keyMaterial.length - currTotal];
+		final byte[] hmacSalt = new byte[keyMaterial.length - currTotal];
 		System.arraycopy(keyMaterial, KEY_SIZE+CIPHER_BLOCK_SIZE, hmacSalt, 0, keyMaterial.length-currTotal);
 		
 		CryptoContainerException caughtException = null;
@@ -278,14 +278,14 @@ public class AesContainer
 		}
 		
 		// first parse the cipher text and the HMAC value from the container:
-		AesContainerDecoder dec = new AesContainerDecoder(secret);
+		final AesContainerDecoder dec = new AesContainerDecoder(secret);
 		if ( false==dec.parse() )
 		{
 			throw new CryptoContainerException("Parsing of the container failed");
 		}
 		
 		// extract the cipher text from the container
-		byte[] cipherText = dec.getText();
+		final byte[] cipherText = dec.getText();
 		
 		// reset the HMAC engine
 		hmac.reset();

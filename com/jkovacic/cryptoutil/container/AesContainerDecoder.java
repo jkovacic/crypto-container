@@ -79,7 +79,7 @@ public class AesContainerDecoder extends DerDecoder
 				return false;
 			}
 			
-			int version = toInt(seq);
+			final int version = toInt(seq);
 			if ( 0 != version )
 			{
 				return false;
