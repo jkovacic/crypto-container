@@ -185,7 +185,7 @@ public class AesContainer
 		}
 		catch ( GeneralSecurityException ex )
 		{
-			throw new CryptoContainerException("Initialzation of crypto engine failed");
+			throw new CryptoContainerException("Initialization of crypto engine failed");
 		}
 		
 		// copy the HMAC salt into an internal array
@@ -198,7 +198,7 @@ public class AesContainer
 		}
 		catch ( InvalidKeyException ex )
 		{
-			throw new CryptoContainerException("Initialzation of HMAC failed");
+			throw new CryptoContainerException("Initialization of HMAC failed");
 		}
 		
 		// so far, consider everything as initialized 
@@ -219,7 +219,7 @@ public class AesContainer
 		// sanity check
 		if ( false==initialized )
 		{
-			throw new CryptoContainerException("Container engine not initialzed");
+			throw new CryptoContainerException("Container engine not initialized");
 		}
 		
 		if ( null==text || 0==text.length )
@@ -269,7 +269,7 @@ public class AesContainer
 		// sanity check
 		if ( false==initialized )
 		{
-			throw new CryptoContainerException("Container engine not initialzed");
+			throw new CryptoContainerException("Container engine not initialized");
 		}
 		
 		if ( null==secret || 0==secret.length )
